@@ -1,4 +1,16 @@
 import { expressjwt } from "express-jwt";
+
+const error = {
+  invalid: {
+      code: "400",
+      msg: "Invalid token.",
+  },
+  notToken: {
+      code: "401",
+      msg: "Access denied. No token provided.",
+  }
+};
+
 export const captureGlobalError = (err, req, res, next) => {
   // 这次错误是由 token 解析失败导致的
   if (err.name === "UnauthorizedError") {
@@ -14,6 +26,7 @@ export const captureGlobalError = (err, req, res, next) => {
 };
 
 export const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
   if (!token) {
     // 如果没有 token，返回 401 错误
     return res.status(401).send(error.notToken);
