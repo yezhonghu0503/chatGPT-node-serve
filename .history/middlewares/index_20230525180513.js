@@ -14,21 +14,16 @@ export const captureGlobalError = (err, req, res, next) => {
 };
 
 export const verifyToken = (req, res, next) => {
-  if (!token) {
-    // 如果没有 token，返回 401 错误
-    return res.status(401).send(error.notToken);
+  //获取header中的token，并验证
+  if (req.headers.authorization) {
+    const flag = verifyToken(req.headers.authorization);
+    //验证失败
+    if (!flag) {
+      res.send({ status: "fail" });
+    }
   }
-
-  try {
-    // 验证 token 是否有效
-    const decoded = jwt.verify(token, secretKey);
-    req.user = decoded;
-    next();
-  } catch (ex) {
-    // 如果 token 无效，返回 400 错误
-    res.status(400).send(error.invalid);
-    return;
-  }
+  //验证成功继续
+  next();
 
   expressjwt({
     secret: "al2pxxxxtx",

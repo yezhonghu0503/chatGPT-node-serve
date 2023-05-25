@@ -5,10 +5,31 @@ import { expressjwt } from "express-jwt";
 import { captureGlobalError } from "../middlewares/index.js";
 
 const app = express();
-const secretKey = "al2pxxxxtx";
+const secretKey = "heyyyyfx";
 const router = express.Router();
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(captureGlobalError);
+app.use((req, res, next) => {
+  //获取header中的token，并验证
+  if (req.headers.authorization) {
+    const flag = verifyToken(req.headers.authorization);
+    //验证失败
+    if (!flag) {
+      res.send({ status: "fail" });
+    }
+  }
+  //验证成功继续
+  next();
+});
+app.use(
+  expressjwt({
+    secret: secretKey,
+    algorithms: ["HS256"], //重要:签名算法（6.0以上版本必须加，否则报错）
+  }).unless({
+    path: ["/^/api//"], // 接口白名单
+  })
+);
 
 // 登录接口:当前版本不进行复杂的鉴权,仅仅进行简单口令鉴权
 router.post("/api/login", async (req, res) => {
@@ -48,4 +69,5 @@ router.post("/chat/talks", async (req, res) => {
   //   res.send(completion.data.choices[0].message);
   res.send(req.body);
 });
+
 export default router;

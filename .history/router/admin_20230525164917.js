@@ -5,10 +5,20 @@ import { expressjwt } from "express-jwt";
 import { captureGlobalError } from "../middlewares/index.js";
 
 const app = express();
-const secretKey = "al2pxxxxtx";
+const secretKey = "heyyyyfx";
 const router = express.Router();
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(captureGlobalError);
+app.use(
+  expressjwt({
+    secret: secretKey,
+    algorithms: ["HS256"], //重要:签名算法（6.0以上版本必须加，否则报错）
+  }).unless({
+    path: ["/api/login"], // 接口白名单
+    // path: [], // 接口白名单
+  })
+);
 
 // 登录接口:当前版本不进行复杂的鉴权,仅仅进行简单口令鉴权
 router.post("/api/login", async (req, res) => {

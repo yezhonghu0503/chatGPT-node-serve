@@ -27,7 +27,6 @@ export const verifyToken = (req, res, next) => {
   } catch (ex) {
     // 如果 token 无效，返回 400 错误
     res.status(400).send(error.invalid);
-    return;
   }
 
   expressjwt({

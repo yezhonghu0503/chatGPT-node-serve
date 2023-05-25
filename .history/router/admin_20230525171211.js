@@ -5,10 +5,19 @@ import { expressjwt } from "express-jwt";
 import { captureGlobalError } from "../middlewares/index.js";
 
 const app = express();
-const secretKey = "al2pxxxxtx";
+const secretKey = "heyyyyfx";
 const router = express.Router();
+app.use(router);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(captureGlobalError);
+app.use(
+  expressjwt({
+    secret: secretKey,
+    algorithms: ["HS256"], //重要:签名算法（6.0以上版本必须加，否则报错）
+  }).unless({
+    path: [/^\/api\//], // 接口白名单
+  })
+);
 
 // 登录接口:当前版本不进行复杂的鉴权,仅仅进行简单口令鉴权
 router.post("/api/login", async (req, res) => {
@@ -29,7 +38,13 @@ router.post("/api/login", async (req, res) => {
   });
 });
 
-router.get("/admin/getinfo", function (req, res) {
+router.get("/admin/getinfo",expressjwt({
+  secret: secretKey,
+  algorithms: ["HS256"], //重要:签名算法（6.0以上版本必须加，否则报错）
+}).unless({
+  path: [/^\/api\//], // 接口白名单
+})
+), function (req, res) {
   // 05：使用 req.user 获取用户信息，并使用 data 属性将用户信息发送给客户端
   console.log(req.user);
   res.send({
