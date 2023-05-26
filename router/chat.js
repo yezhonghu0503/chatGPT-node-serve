@@ -7,13 +7,16 @@ let defaultModel = "gpt-3.5-turbo";
 
 // chatgpt对话接口
 router.post("/chat/talks", async (req, res) => {
-  const modeName = defaultModel;
-  if(!res.boay.msg){
+  const modelName = defaultModel;
+  console.log(req.body.msg);
+  console.log(req.body.modelName)
+  if(!req.body.msg){
     res.status(404).send('msg为空');
   }
-  res.boay.modelName?model = res.boay.modelName:''
+  req.body.modelName?model = req.body.modelName:'';
+  console.log(modelName)
   const completion = await openai.createChatCompletion({
-    model: modeName,
+    model: modelName,
     messages: [{ role: "user", content: req.body.msg }],
   });
   res.send(completion);
