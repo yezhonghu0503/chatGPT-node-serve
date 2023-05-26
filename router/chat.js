@@ -9,7 +9,7 @@ let defaultModel = "gpt-3.5-turbo";
 router.post("/chat/talks", async (req, res) => {
   const modeName = defaultModel;
   if(!res.boay.msg){
-    res.status(404).send('msg为空')
+    res.status(404).send('msg为空');
   }
   res.boay.modelName?model = res.boay.modelName:''
   const completion = await openai.createChatCompletion({
