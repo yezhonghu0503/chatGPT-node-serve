@@ -9,20 +9,19 @@ app.get("/stream", (req, res) => {
   // 获取要发送的字符串
   const message = "Hello, world!";
 
-  // 设置计数器
-  let index = 0;
-
-  // 定时发送字符串中的两个字符
-  const intervalId = setInterval(() => {
-    if (index < message.length) {
-      res.send(message.slice(index, index + 2));
-      index += 2;
-    } else {
-      // 字符串发送完成后停止定时器
-      clearInterval(intervalId);
-      res.end();
-    }
+  // 逐字逐句地发送信息给客户端
+  let i = 0;
+  // const timer = null;
+  setInterval(() => {
+    res.write(message[i]);
+    // i++;
+    // if (i > message.length) {
+    //   clearInterval(timer);
+    // }
   }, 1000);
+
+  // 发送完成后停止
+  res.end();
 });
 
 app.listen(3003, () => {

@@ -15,7 +15,7 @@ app.get("/stream", (req, res) => {
   // 定时发送字符串中的两个字符
   const intervalId = setInterval(() => {
     if (index < message.length) {
-      res.send(message.slice(index, index + 2));
+      res.write(message.slice(index, index + 2));
       index += 2;
     } else {
       // 字符串发送完成后停止定时器
