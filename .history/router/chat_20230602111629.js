@@ -14,9 +14,6 @@ router.post("/chat/talks", async (req, res) => {
   if (!req.body.msg) {
     res.status(404).send("msg为空");
   }
-  if (Array.isArray(req.body.msg)) {
-    res.status(400).send("参数格式有误，请检查参数格式");
-  }
   // req.body.msg示例：{ role: "roleName", content: msg }
   req.body.modelName ? (model = req.body.modelName) : "";
   const completion = await openai.createChatCompletion({
