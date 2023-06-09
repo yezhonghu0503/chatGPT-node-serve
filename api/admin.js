@@ -9,7 +9,10 @@ module.exports = ({side, joi}) => {
       summary: `根据用户名获取 token`,
       schema: {
         body: joi.object({
-          passphrase: joi.string().default(`hugiegie`).required().description(`用户名`),
+          passphrase: joi.string()
+            .default(`hugiegie`)
+            .required()
+            .description(`用户名`),
         }).description(`用户信息`),
       },
       async action (req, res) {
