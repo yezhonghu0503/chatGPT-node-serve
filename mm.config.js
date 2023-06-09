@@ -6,6 +6,7 @@ const expressjwtPkg = import(`express-jwt`);
  * @type {import('mockm/@types/config').Config}
  */
 module.exports = async (util) => {
+  const joi = await util.tool.generate.initPackge(`joi`)
   const { expressjwt } = (await expressjwtPkg).default
   return {
     plugin: [util.plugin.validate, util.plugin.apiDoc],
@@ -26,7 +27,7 @@ module.exports = async (util) => {
           ], // 接口白名单
         }),
       ],
-      ...require(`./api/admin.js`)({side: util.side}),
+      ...require(`./api/admin.js`)({side: util.side, joi}),
       ...require(`./api/chat.js`),
       ...require(`./api/imageGenerator.js`),
       "get /stream"(req, res) {

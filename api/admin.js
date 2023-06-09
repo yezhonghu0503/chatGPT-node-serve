@@ -1,9 +1,8 @@
 const jwtPkg = import("jsonwebtoken");
-const joi = require(`joi`)
 
 const secretKey = "al2pxxxxtx";
 
-module.exports = ({side}) => {
+module.exports = ({side, joi}) => {
   return {
     "post /api/login": side({
       tags: [`admin`],
