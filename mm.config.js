@@ -9,6 +9,7 @@ module.exports = async (util) => {
   const joi = await util.tool.generate.initPackge(`joi`)
   const { expressjwt } = (await expressjwtPkg).default
   return {
+    osIp: `127.0.0.1`,
     plugin: [util.plugin.validate, util.plugin.apiDoc],
     port: 8999,
     testPort: 8995,
@@ -16,16 +17,16 @@ module.exports = async (util) => {
     watch: [`./api/`],
     api: {
       "use /": [
-        expressjwt({
-          secret: "al2pxxxxtx",
-          algorithms: ["HS256"], //重要:签名算法（6.0以上版本必须加，否则报错）
-        }).unless({
-          path: [
+        (req, res, next) => {
+          ;![
             `/api/login`,
             `/doc`,
             `/doc/openApi.json`,
-          ], // 接口白名单
-        }),
+          ].includes(req.url) ? expressjwt({
+            secret: "al2pxxxxtx",
+            algorithms: ["HS256"], //重要:签名算法（6.0以上版本必须加，否则报错）
+          })(req, res, next) : next()
+        }
       ],
       ...require(`./api/admin.js`)({side: util.side, joi}),
       ...require(`./api/chat.js`),
