@@ -5,12 +5,17 @@ const app = express();
 const router = express.Router();
 
 router.post("/imageGenerator/generate", async (req, res) => {
-  const completion = await openai.createImage({
-    prompt: req.body.prompt,
-    n: 2,
-    size: "1024x1024",
+  // 旧版图像生成接口
+  // const completion = await openai.createImage({
+  //   prompt: req.body.prompt,
+  //   n: 2,
+  //   size: "1024x1024",
+  // });
+  const image = await openai.images.generate({
+    model: "dall-e-3",
+    prompt: params.prompt,
   });
-  res.send(completion.data);
+  res.send(image.data);
 });
 
 export default router;
