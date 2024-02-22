@@ -25,7 +25,20 @@ router.post("/chat/talks", async (req, res) => {
     // messages: [{ role: req.body.role, content: req.body.msg }],
     messages: req.body.messages,
   });
-  res.send(completion);
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
+  let count = 0;
+  const timerId = setInterval(() => {
+    res.write(completion.choices[0].message.content.slice(count, count + 4));
+    count++;
+    if (count > completion.choices[0].message.content.length) {
+      clearInterval(timerId);
+    }
+  }, 1000);
+  // res.send(completion);
 });
 
 // chat模型列表
