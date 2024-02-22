@@ -22,7 +22,7 @@ router.post("/chat/talks", async (req, res) => {
   req.body.modelName ? (model = req.body.modelName) : "";
   const completion = await openai.chat.completions.create({
     model: modelName,
-    messages: req.body.msg,
+    messages: [{ role: "user", content: req.body.msg }],
   });
   res.send(completion);
 });
