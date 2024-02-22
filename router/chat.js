@@ -14,9 +14,11 @@ router.post("/chat/talks", async (req, res) => {
   const modelName = defaultModel;
   if (!req.body.messages.length) {
     res.status(404).send("msg为空");
+    return;
   }
   if (!Array.isArray(req.body.messages)) {
     res.status(400).send("参数格式有误，请检查参数格式");
+    return;
   }
   // req.body.msg示例：{ role: "roleName", content: msg }
   req.body.modelName ? (model = req.body.modelName) : "";
@@ -30,15 +32,7 @@ router.post("/chat/talks", async (req, res) => {
     "Cache-Control": "no-cache",
     Connection: "keep-alive",
   });
-  let count = 0;
-  const timerId = setInterval(() => {
-    res.write(completion.choices[0].message.content.slice(count, count + 4));
-    count++;
-    if (count > completion.choices[0].message.content.length) {
-      clearInterval(timerId);
-    }
-  }, 1000);
-  // res.send(completion);
+  res.send(completion.choices[0].message.content);
 });
 
 // chat模型列表
