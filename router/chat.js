@@ -12,10 +12,10 @@ const messages = [];
 // chatgpt对话
 router.post("/chat/talks", async (req, res) => {
   const modelName = defaultModel;
-  if (!req.body.msg) {
+  if (!req.body.messages.length) {
     res.status(404).send("msg为空");
   }
-  if (Array.isArray(req.body.msg)) {
+  if (!Array.isArray(req.body.messages)) {
     res.status(400).send("参数格式有误，请检查参数格式");
   }
   // req.body.msg示例：{ role: "roleName", content: msg }
