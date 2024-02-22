@@ -4,7 +4,8 @@ import openai from "../utils/openaiAuth.js";
 const app = express();
 const router = express.Router();
 // 默认模型
-let defaultModel = "gpt-3.5-turbo";
+// let defaultModel = "gpt-3.5-turbo";
+let defaultModel = "gpt-4-1106-preview";
 // 历史对话消息，当前区分历史对话消息的方式为前端传入本地缓存
 const messages = [];
 
@@ -19,7 +20,7 @@ router.post("/chat/talks", async (req, res) => {
   }
   // req.body.msg示例：{ role: "roleName", content: msg }
   req.body.modelName ? (model = req.body.modelName) : "";
-  const completion = await openai.createChatCompletion({
+  const completion = await openai.chat.completions.create({
     model: modelName,
     messages: req.body.msg,
   });
