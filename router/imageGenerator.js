@@ -13,7 +13,7 @@ router.post("/imageGenerator/generate", async (req, res) => {
   // });
   const image = await openai.images.generate({
     model: "dall-e-3",
-    prompt: params.prompt,
+    prompt: req.body.prompt,
   });
   res.send(image.data);
 });
