@@ -16,7 +16,8 @@ export function verifyToken(err,req, res, next) {
     const token = req.headers.authorization;
     if (!token) {
         // 如果没有 token，返回 401 错误
-        return res.status(401).send(error.notToken);
+        // return res.status(401).send(error.notToken);
+        return res.send(error.notToken);
     }
 
     try {
@@ -27,7 +28,8 @@ export function verifyToken(err,req, res, next) {
         next();
     } catch (ex) {
         // 如果 token 无效，返回 400 错误
-        res.status(400).send(error.invalid);
+        // res.status(400).send(error.invalid);
+        return res.send(error.invalid);
     }
     if (err.name === "UnauthorizedError") {
       return res.send({
